@@ -3,6 +3,7 @@ package com.adivid.architecturecomponentcif;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,6 +14,13 @@ import android.widget.Toast;
 
 public class AddNoteActivity extends AppCompatActivity {
 
+    private static final String TAG = "AddNoteActivity";
+    public static final String EXTRA_TITLE =
+            "com.adivid.architecturecomponentcif.EXTRA_TITLE";
+    public static final String EXTRA_DESCRIPTION =
+            "com.adivid.architecturecomponentcif.EXTRA_DESCRIPTION";
+    public static final String EXTRA_PRIORITY =
+            "com.adivid.architecturecomponentcif.EXTRA_PRIORITY";
     private EditText editTextTitle;
     private EditText editTextDescription;
     private NumberPicker numberPickerPriority;
@@ -27,7 +35,7 @@ public class AddNoteActivity extends AppCompatActivity {
         numberPickerPriority = findViewById(R.id.number_picker_priority);
 
         numberPickerPriority.setMinValue(1);
-        numberPickerPriority.setMinValue(10);
+        numberPickerPriority.setMaxValue(10);
 
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_close_24);
 
@@ -36,7 +44,7 @@ public class AddNoteActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater =  getMenuInflater();
+        MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.add_item_menu, menu);
         return true;
     }
@@ -44,7 +52,7 @@ public class AddNoteActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.save_note:
                 saveNote();
                 return true;
@@ -61,11 +69,17 @@ public class AddNoteActivity extends AppCompatActivity {
         String description = editTextDescription.getText().toString();
         int priority = numberPickerPriority.getValue();
 
-        if(title.trim().isEmpty() || description.trim().isEmpty()){
+        if (title.trim().isEmpty() || description.trim().isEmpty()) {
             Toast.makeText(this, "Plesase insert a note", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        Intent data = new Intent();
+        data.putExtra(EXTRA_TITLE, title);
+        data.putExtra(EXTRA_DESCRIPTION, title);
+        data.putExtra(EXTRA_PRIORITY, priority);
+        setResult(RESULT_OK, data);
+        finish();
 
 
 
